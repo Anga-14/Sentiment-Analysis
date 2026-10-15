@@ -34,7 +34,7 @@ for (const assetUrl of assetUrls) {
   html = html.split(`="${rootPath}`).join(`="./${relativePath}`);
 }
 
- const pathShim = '<script>if(location.pathname.startsWith("/Sentiment-Analysis")){history.replaceState(null,"",location.pathname.replace(/^\/Sentiment-Analysis/,"")||"/"+location.search+location.hash)}</script>';
+ const pathShim = '<script>if(location.pathname.startsWith("/Sentiment-Analysis")){var p=location.pathname.slice("/Sentiment-Analysis".length)||"/";history.replaceState(null,"",p+location.search+location.hash)}</script>';
  html = html.replace('<div id="root"></div>', `${pathShim}<div id="root"></div>`);
  await writeFile(path.join(outDir, "index.html"), html);
 console.log(`Mirrored ${source} with ${assetUrls.size} local assets into ${outDir}`);
