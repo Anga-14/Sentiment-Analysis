@@ -25,7 +25,15 @@ for (const assetUrl of assetUrls) {
   const relativePath = new URL(assetUrl).pathname.replace(/^\//, "");
   const target = path.join(outDir, relativePath);
   await mkdir(path.dirname(target), { recursive: true });
-  await writeFile(target, Buffer.from(await assetResponse.arrayBuffer()));
+  let asset = Buffer.from(await assetResponse.arrayBuffer());
+  if (relativePath.endsWith(".js")) {
+    const sourceText = asset.toString("utf8");
+    asset = Buffer.from(sourceText.replace('e$={hook:nie,searchHook:eie,parser:Uae,base:""', 'e$={hook:nie,searchHook:eie,parser:Uae,base:"/Sentiment-Analysis"'), "utf8");
+  }
+  if (relativePath.endsWith(".css")) {
+    asset = Buffer.from(asset.toString("utf8").replaceAll("url(/assets/", "url("), "utf8");
+  }
+  await writeFile(target, asset);
   const rootPath = `/${relativePath}`;
   html = html.split(`="${rootPath}`).join(`="./${relativePath}`);
 }
