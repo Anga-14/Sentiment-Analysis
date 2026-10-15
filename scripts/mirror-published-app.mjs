@@ -26,10 +26,6 @@ for (const assetUrl of assetUrls) {
   const target = path.join(outDir, relativePath);
   await mkdir(path.dirname(target), { recursive: true });
   let asset = Buffer.from(await assetResponse.arrayBuffer());
-  if (relativePath.endsWith(".js")) {
-    const sourceText = asset.toString("utf8");
-    asset = Buffer.from(sourceText.replace('e$={hook:nie,searchHook:eie,parser:Uae,base:""', 'e$={hook:nie,searchHook:eie,parser:Uae,base:"/Sentiment-Analysis"'), "utf8");
-  }
   if (relativePath.endsWith(".css")) {
     asset = Buffer.from(asset.toString("utf8").replaceAll("url(/assets/", "url("), "utf8");
   }
